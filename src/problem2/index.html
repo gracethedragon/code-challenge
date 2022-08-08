@@ -11,19 +11,40 @@
 <body>
 
   <!-- You may reorganise the whole HTML, as long as your form achieves the same effect. -->
-  <form onsubmit="return !1">
-    <label for="input-address">ETH Address</label>
-    <input id="input-address" />
+  <br>
+  <br>
+  <div id="myModal" class="modal">
 
-    <label for="input-amount">Amount to send</label>
-    <input id="input-amount" />
+  <!-- Modal content -->
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <p>Tokens Sent!</p>
+  </div>
 
-    <label for="input-otp">OTP Authentication</label>
-    <input type="number" id="input-otp" />
+</div>
+  <div class="form-container">
+  
+    <div class="logo-container">
+      <img src="logo_switcheo.png">
+    </div>
+  
+    <form class="details">
+      <div class="input-container">
+        <input class="col-sm-12 address-input with-placeholder" id="address" type="text" placeholder="ETH Address" required />
+      </div>
+      <div class="input-container">
+        <input class="col-sm-5 amount-input with-placeholder" id="amount" type="number" min="0.000000000000000001" step="0.000000000000000001" placeholder="Amount to Send" required />
+      </div>
+      <div class="input-container">
+        <input class="col-sm-5 col-sm-push-2 otp-input with-placeholder" id="otp" type="text"
+          placeholder="OTP" required/>
+      </div>
 
-    <button>SEND TOKENS</button>
-  </form>
-  <script src="script.js"></script>
+      <button id="submit-button" type="submit">Send Tokens</button>
+  
+    </form>
+    <script src="script.js"></script>
+  </div>
 </body>
 
 </html>
