@@ -1,0 +1,26 @@
+Questions:
+Reasons for why transactions would fail? Is it something that can be validated by checking data types as it is stored in the database, or are more complex tests required on server side? What kind of validation is done with the internal API?
+Number of broadcast transaction requests at any one second in time? To understand if it would be more efficient to do batch-processing
+
+General flow:
+Broadcaster service receives POST/broadcast_transaction parameters from internal API
+Broadcaster service does data validation as it stores the post request parameters in the backend database, storing a transaction status of ‘pending’.
+If data validation tests are passed and parameters are successfully written to the backend database, broadcaster service returns a signed transaction.
+If validation fails, a response status code of 400 is returned to the internal API
+Signed transaction is sent to the evm-compatible blockchain network node.
+
+Broadcast outcomes:
+Successful broadcast:
+If the blockchain node returns a success code, the broadcaster service updates transaction status to ‘success’ in the backend.
+Response status code of 200 is sent to the internal API.
+
+Failed broadcast/Timed out - First time:
+If the blockchain node returns a failure code or does not return any status after 2 seconds, the broadcaster service updates transaction status to ‘retry’ in the backend.
+Broadcaster service sends the transaction to the blockchain node again. Follow steps based on broadcast outcomes.
+
+	Failed broadcast/Timed out - Second time:
+If the blockchain node returns a failure code or does not return any status after 2 seconds, the broadcaster service updates transaction status to ‘failed’ in the backend.
+Response status code of 500 is returned to the internal API.
+
+Upon restart of broadcaster service:
+Broadcaster service will retrieve orders from the backend that have a transaction status of ‘pending’ or ‘retry’ and send these transactions to the blockchain node.
